@@ -49,6 +49,16 @@ class TaskController extends Controller
             'completed' => 'required|boolean',
         ]);
         $task->update($request->all());
+        return response()->json($task);
+    }
+
+    public function destroy($id) {
+        $task = Auth::user()->tasks()->find($id);
+        if(!$task) {
+            return response()->json(['Message' => 'Task not found'], 401);
+        }
+        $task->delete();
+        return response()->json(null, 204);
     }
 
 }
